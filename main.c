@@ -30,7 +30,7 @@ int main()
    case 2:
     printf("\nAlegeti nodul pe care doriti sa-l stergeti");
     scanf("%d",&x);
-    rt=Delete(rt,x);
+    Delete(rt,x);
     break;
    case 3:
     preorder(rt);
