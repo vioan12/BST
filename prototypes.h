@@ -21,7 +21,7 @@ void inorder(Node *root);
 void postorder(Node *root);
 Node* FindMin(Node* root);
 void Delete( Node *root, int data);
-
+Node* Delete2( Node *root, int data);
 
 
 #endif // PROTOTYPES_H_INCLUDED
