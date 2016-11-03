@@ -12,9 +12,9 @@ void Display(Node* root, int nivel)
 	}
 }
 
-//programul va primi ca parametru numãrul pe care trebuie sã îl adauge
+//programul va primi ca parametru numÄƒrul pe care trebuie sÄƒ Ã®l adauge
 Node *Add_Node(Node *root,int data)
-{//verificam mai intai dacã existã o rãdãcinã (dacã arborele a fost creat)
+{//verificam mai intai dacÄƒ existÄƒ o rÄƒdÄƒcinÄƒ (dacÄƒ arborele a fost creat)
 //Alocam memorie pentru noul nod si stabilim valorile pentru data,left_child,right_child.
 
     if(root==NULL)
@@ -68,39 +68,59 @@ Node* FindMin(Node* root)
 	while(root->left != NULL) root = root->left;
 	return root;
 }
- Node* Delete( Node *root, int data) {
-	if(root == NULL) return root;
-	else
-        while
+
+void Delete( Node *root, int data) {
+     int sw;
+	while((root->data != data) && (root != NULL)){
         if(data < root->data)
-            root->left = Delete(root->left,data);
-
-	else if (data > root->data)
-        root->right = Delete(root->right,data);
-
-	else {
-		// Cazul 1:
-		if(root->left == NULL && root->right == NULL) {
-			free(root);
-			root = NULL;
-		}
-		//Cazul 2:
-		else if(root->left == NULL) {
-			 Node *temp = root;
-			root = root->right;
-			free(temp);
-		}
-		else if(root->right == NULL) {
-			Node *temp = root;
-			root = root->left;
-			free(temp);
-		}
-		// cazul 3:
-		else {
-			Node *temp = FindMin(root->right);//mergem in dreapta si cautam  nr minim
-			root->data = temp->data;
-			root->right = Delete(root->right,temp->data);
-		}
+            root=root->left;
+        else
+            if (data > root->data)
+                root=root->right;
 	}
-	return root;
+	printf("\n%d asta e data",root->data);
+    // Cazul 1:
+    if(root->left == NULL && root->right == NULL){
+        free(root);
+        root = NULL;
+    }
+    //Cazul 2:
+	else
+        if(root->left == NULL){
+            Node *temp = root;
+            root = root->right;
+            free(temp);
+        }else
+            if(root->right == NULL){
+                Node *temp = root;
+                root = root->left;
+                free(temp);
+            }else{
+            // Cazul 3:
+                Node *temp = FindMin(root->right);//mergem in dreapta si cautam  nr minim
+                root=temp;
+                sw=1;
+                while(sw==1){
+                    sw=0;
+                    if(root->left == NULL && root->right == NULL){
+                        free(root);
+                        root = NULL;
+                    }
+                    else
+                        if(root->left == NULL){
+                            Node *temp = root;
+                            root = root->right;
+                            free(temp);
+                        }else
+                            if(root->right == NULL){
+                                Node *temp = root;
+                                root = root->left;
+                                free(temp);
+                            }else{
+                                sw=1;
+                                Node *temp = FindMin(root->right);
+                                root=temp;
+                            }
+                }
+            }
 }
