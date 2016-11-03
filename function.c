@@ -124,3 +124,63 @@ void Delete( Node *root, int data) {
                 }
             }
 }
+
+NodeAVL* deleteAVLNode_2( NodeAVL *node, int value)
+{
+	if (node == NULL)
+	{
+		printf("Can't delete key %d, it is not in AVL tree!\n", value);
+		return node;
+	}
+
+	if ( value < node->key )
+		node->left = deleteAVLNode(node->left, value);
+
+	else if( value > node->key )
+		node->right = deleteAVLNode(node->right, value);
+
+	else
+	{
+        // node with only one child or no child
+		if( (node->left == NULL) || (node->right == NULL) )
+		{
+			NodeAVL *temp;
+
+			if( node->left != NULL )
+				temp = node->left;
+			else
+				temp = node->right;
+ 
+            // No child case
+			if(temp == NULL)
+				node = NULL;
+
+			else // One child case
+			{
+				*node = *temp; 
+				free(temp);
+			}
+        }
+		else
+		{
+            // node with two children: Get the inorder successor
+            // (smallest in the right subtree)
+			NodeAVL * temp = node->right;
+
+			while (temp->left != NULL)
+				temp = temp->left;
+ 
+            // Copy the inorder successor's data to this node
+			node->key = temp->key;
+ 
+            // Delete the inorder successor
+			node->right = deleteAVLNode(node->right, temp->key);
+		}
+	}
+ 
+    // If the tree had only one node then return
+    if (node != NULL)
+		node = balance(node);
+
+	return node;   
+}
