@@ -125,62 +125,37 @@ void Delete( Node *root, int data) {
             }
 }
 
-NodeAVL* deleteAVLNode_2( NodeAVL *node, int value)
-{
-	if (node == NULL)
-	{
-		printf("Can't delete key %d, it is not in AVL tree!\n", value);
-		return node;
-	}
+ Node* Delete2( Node *root, int data) {
+	if(root == NULL) return root;
+	else if(data < root->data)
+        root->left = Delete(root->left,data);
 
-	if ( value < node->key )
-		node->left = deleteAVLNode(node->left, value);
+	else if (data > root->data)
+        root->right = Delete(root->right,data);
 
-	else if( value > node->key )
-		node->right = deleteAVLNode(node->right, value);
-
-	else
-	{
-        // node with only one child or no child
-		if( (node->left == NULL) || (node->right == NULL) )
-		{
-			NodeAVL *temp;
-
-			if( node->left != NULL )
-				temp = node->left;
-			else
-				temp = node->right;
- 
-            // No child case
-			if(temp == NULL)
-				node = NULL;
-
-			else // One child case
-			{
-				*node = *temp; 
-				free(temp);
-			}
-        }
-		else
-		{
-            // node with two children: Get the inorder successor
-            // (smallest in the right subtree)
-			NodeAVL * temp = node->right;
-
-			while (temp->left != NULL)
-				temp = temp->left;
- 
-            // Copy the inorder successor's data to this node
-			node->key = temp->key;
- 
-            // Delete the inorder successor
-			node->right = deleteAVLNode(node->right, temp->key);
+	else {
+		// Cazul 1:
+		if(root->left == NULL && root->right == NULL) {
+			free(root);
+			root = NULL;
+		}
+		//Cazul 2:
+		else if(root->left == NULL) {
+			 Node *temp = root;
+			root = root->right;
+			free(temp);
+		}
+		else if(root->right == NULL) {
+			Node *temp = root;
+			root = root->left;
+			free(temp);
+		}
+		// cazul 3:
+		else {
+			Node *temp = FindMin(root->right);//mergem in dreapta si cautam  nr minim
+			root->data = temp->data;
+			root->right = Delete(root->right,temp->data);
 		}
 	}
- 
-    // If the tree had only one node then return
-    if (node != NULL)
-		node = balance(node);
-
-	return node;   
+	return root;
 }
