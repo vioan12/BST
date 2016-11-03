@@ -20,7 +20,7 @@ void preorder (Node *root);
 void inorder(Node *root);
 void postorder(Node *root);
 Node* FindMin(Node* root);
-Node* Delete( Node *root, int data);
+void Delete( Node *root, int data);
 
 
 
